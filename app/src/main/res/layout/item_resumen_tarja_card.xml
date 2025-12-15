@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        tools:layout_editor_absoluteX="-9dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <!-- Data Fields -->
+        <TextView
+            android:id="@+id/label_folio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Folio:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/value_folio"
+            android:layout_width="189dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_folio"
+            app:layout_constraintTop_toTopOf="@+id/label_folio"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_csg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="CSG:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_folio" />
+
+        <TextView
+            android:id="@+id/value_csg"
+            android:layout_width="194dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_csg"
+            app:layout_constraintTop_toTopOf="@+id/label_csg"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_lote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Lote:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_csg" />
+
+        <TextView
+            android:id="@+id/value_lote"
+            android:layout_width="191dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_lote"
+            app:layout_constraintTop_toTopOf="@+id/label_lote"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="SDP:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_lote" />
+
+        <TextView
+            android:id="@+id/value_sdp"
+            android:layout_width="186dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_sdp"
+            app:layout_constraintTop_toTopOf="@+id/label_sdp"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_linea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Línea:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_sdp" />
+
+        <TextView
+            android:id="@+id/value_linea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_linea"
+            app:layout_constraintTop_toTopOf="@+id/label_linea"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Categoría:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_linea" />
+
+        <TextView
+            android:id="@+id/value_categoria"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_categoria"
+            app:layout_constraintTop_toTopOf="@+id/label_categoria"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/label_cajas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Cajas:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_categoria" />
+
+        <TextView
+            android:id="@+id/value_cajas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_cajas"
+            app:layout_constraintTop_toTopOf="@+id/label_cajas"
+            tools:text="abc" />
+
+        <!-- Action Buttons -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_edit"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Editar"
+            app:layout_constraintBottom_toTopOf="@+id/button_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/button_delete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            app:backgroundTint="@color/atacama_red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

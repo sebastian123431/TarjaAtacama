@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Indicador de Estado -->
+        <TextView
+            android:id="@+id/value_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/status_background"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:backgroundTint="@color/atacama_green"
+            tools:text="Enviado" />
+
+        <TextView
+            android:id="@+id/label_n_tarja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="N° Tarja:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/value_n_tarja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_n_tarja"
+            app:layout_constraintTop_toTopOf="@+id/label_n_tarja"
+            tools:text="12345" />
+
+        <TextView
+            android:id="@+id/label_pallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pallet:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_n_tarja" />
+
+        <TextView
+            android:id="@+id/value_pallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_pallet"
+            app:layout_constraintTop_toTopOf="@+id/label_pallet"
+            tools:text="678" />
+
+        <TextView
+            android:id="@+id/label_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Fecha:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_pallet" />
+
+        <TextView
+            android:id="@+id/value_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_fecha"
+            app:layout_constraintTop_toTopOf="@+id/label_fecha"
+            tools:text="25-05-2024" />
+
+        <TextView
+            android:id="@+id/label_prod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Prod:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_fecha" />
+
+        <TextView
+            android:id="@+id/value_prod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_prod"
+            app:layout_constraintTop_toTopOf="@+id/label_prod"
+            tools:text="123" />
+
+        <TextView
+            android:id="@+id/label_com"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Com:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_prod" />
+
+        <TextView
+            android:id="@+id/value_com"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_com"
+            app:layout_constraintTop_toTopOf="@+id/label_com"
+            tools:text="456" />
+
+        <TextView
+            android:id="@+id/label_plu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="PLU:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_com" />
+
+        <TextView
+            android:id="@+id/value_plu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_plu"
+            app:layout_constraintTop_toTopOf="@+id/label_plu"
+            tools:text="789" />
+
+        <TextView
+            android:id="@+id/label_total_cajas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Total Cajas:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_plu" />
+
+        <TextView
+            android:id="@+id/value_total_cajas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/label_total_cajas"
+            app:layout_constraintTop_toTopOf="@+id/label_total_cajas"
+            tools:text="100" />
+
+        <LinearLayout
+            android:id="@+id/actions_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_edit"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Editar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_delete"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eliminar"
+                android:textColor="@color/atacama_red" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

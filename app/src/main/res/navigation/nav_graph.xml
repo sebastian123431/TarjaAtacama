@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainActivity">
+
+    <activity
+        android:id="@+id/tarjas_ingresadas"
+        android:name="cl.atacama.tarjaatacama.tarjas_ingresadas"
+        android:label="activity_tarjas_ingresadas"
+        tools:layout="@layout/activity_tarjas_ingresadas" />
+
+    <activity
+        android:id="@+id/resumen_tarja"
+        android:name="cl.atacama.tarjaatacama.Resumen_tarja"
+        android:label="activity_resumen_tarja"
+        tools:layout="@layout/activity_resumen_tarja" />
+
+    <activity
+        android:id="@+id/encabezado_tarja"
+        android:name="cl.atacama.tarjaatacama.encabezado_tarja"
+        android:label="activity_encabezado_tarja"
+        tools:layout="@layout/activity_encabezado_tarja" />
+
+    <activity
+        android:id="@+id/uso_repaletizaje_codigo"
+        android:name="cl.atacama.tarjaatacama.uso_repaletizaje_codigo"
+        android:label="activity_uso_repaletizaje_codigo"
+        tools:layout="@layout/activity_uso_repaletizaje_codigo" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="cl.atacama.tarjaatacama.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+</navigation>

@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">TarjaAtacama</string>
+
+    <!-- Screen Titles -->
+    <string name="title_resumen_tarja">Resumen de Tarja</string>
+    <string name="title_uso_repaletizaje">USO REPALETIZAJE / CÓDIGOS</string>
+
+    <!-- Labels and Headers -->
+    <string name="header_uso_repaletizaje">USO REPALETIZAJE / CÓDIGOS</string>
+
+    <!-- Hints -->
+    <string name="hint_numero_folio">N° Folio</string>
+    <string name="hint_productor_csg">Productor (CSG)</string>
+    <string name="hint_lote">Lote</string>
+    <string name="hint_sdp">SDP</string>
+    <string name="hint_linea_proceso">Línea Proc / Acopio</string>
+    <string name="hint_categoria">Categoría</string>
+    <string name="hint_cantidad_cajas">Cantidad Cajas</string>
+
+    <!-- Button Texts -->
+    <string name="button_agregar">Agregar</string>
+    <string name="button_hecho">Hecho</string>
+
+    <!-- Content Descriptions -->
+    <string name="desc_agregar_detalle">Agregar nuevo detalle de tarja</string>
+    <string name="etiqueta_image_description">Imagen de la etiqueta</string>
+
+</resources>
