@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -48,6 +49,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- BroadcastReceiver para pruebas de importación CSV -->
+        <receiver android:name=".util.CsvImportReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="cl.Atacama.tarjaatacama.IMPORT_CSV" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
