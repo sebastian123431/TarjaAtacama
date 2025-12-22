@@ -2,6 +2,9 @@ package cl.Atacama.tarjaatacama.controller
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
+import android.util.Log
 import cl.Atacama.tarjaatacama.db.DB
 import cl.Atacama.tarjaatacama.modelo.Encabezado
 import cl.Atacama.tarjaatacama.modelo.Etiqueta
@@ -10,35 +13,61 @@ import cl.Atacama.tarjaatacama.modelo.Tarja
 class TarjaController(private val context: Context) {
 
     private val dbHelper = DB(context)
+    private val TAG = "TarjaController"
 
-    fun getEncabezado(numTarja: Int): Encabezado? {
-        val db = dbHelper.readableDatabase
-        var encabezado: Encabezado? = null
-        val cursor = db.query(DB.TABLE_ENCABEZADO, null, "${DB.COL_ENC_NUM_TARJA} = ?", arrayOf(numTarja.toString()), null, null, null)
-
-        if (cursor.moveToFirst()) {
-            val totalCajas = getTotalCajas(numTarja)
-            encabezado = Encabezado(
-                numTarja = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_NUM_TARJA)),
-                numPallet = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_NUM_PALLET)),
-                fechaEmbalaje = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_FECHA)),
-                embalaje = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_EMBALAJE_ID)).toString(),
-                etiqueta = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_ETIQUETA_ID)).toString(),
-                variedad = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_VARIEDAD)),
-                recibidor = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_RECIBIDOR)),
-                logo = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_LOGO_NOM)),
-                procProd = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_PROD)),
-                procCom = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_COM)),
-                plu = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PLU)),
-                totalCajas = totalCajas,
-                status = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_STATUS))
-            )
+    // Wrappers seguros para abrir la DB: si la migración falla en onUpgrade, capturamos la excepción
+    private fun safeReadableDatabase(): SQLiteDatabase? {
+        return try {
+            dbHelper.readableDatabase
+        } catch (e: SQLiteException) {
+            Log.e(TAG, "No se pudo abrir la base de datos (readable): ${e.message}")
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error inesperado abriendo DB (readable): ${e.message}")
+            null
         }
-        cursor.close()
-        return encabezado
     }
 
-    fun updateEncabezado(
+    private fun safeWritableDatabase(): SQLiteDatabase? {
+        return try {
+            dbHelper.writableDatabase
+        } catch (e: SQLiteException) {
+            Log.e(TAG, "No se pudo abrir la base de datos (writable): ${e.message}")
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error inesperado abriendo DB (writable): ${e.message}")
+            null
+        }
+    }
+
+    fun getEncabezado(numTarja: Int): Encabezado? {
+        val db = safeReadableDatabase() ?: return null
+         var encabezado: Encabezado? = null
+         val cursor = db.query(DB.TABLE_ENCABEZADO, null, "${DB.COL_ENC_NUM_TARJA} = ?", arrayOf(numTarja.toString()), null, null, null)
+
+         if (cursor.moveToFirst()) {
+             val totalCajas = getTotalCajas(numTarja)
+             encabezado = Encabezado(
+                 numTarja = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_NUM_TARJA)),
+                 numPallet = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_NUM_PALLET)),
+                 fechaEmbalaje = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_FECHA)),
+                 embalaje = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_EMBALAJE_ID)).toString(),
+                 etiqueta = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_ETIQUETA_ID)).toString(),
+                 variedad = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_VARIEDAD)),
+                 recibidor = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_RECIBIDOR)),
+                 logo = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_LOGO_NOM)),
+                 procProd = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_PROD)),
+                 procCom = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_COM)),
+                 plu = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PLU)),
+                 totalCajas = totalCajas,
+                 status = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_STATUS))
+             )
+         }
+         cursor.close()
+         return encabezado
+     }
+
+     fun updateEncabezado(
         numTarja: Int,
         numPallet: Int,
         fechaEmbalaje: String,
@@ -51,7 +80,7 @@ class TarjaController(private val context: Context) {
         procCom: Int,
         plu: Int
     ): Int {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return -1
         val values = ContentValues().apply {
             put(DB.COL_ENC_NUM_PALLET, numPallet)
             put(DB.COL_ENC_FECHA, fechaEmbalaje)
@@ -80,7 +109,7 @@ class TarjaController(private val context: Context) {
         procCom: Int,
         plu: Int
     ): Long {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return -1
         val values = ContentValues().apply {
             put(DB.COL_ENC_NUM_TARJA, numTarja)
             put(DB.COL_ENC_NUM_PALLET, numPallet)
@@ -97,10 +126,9 @@ class TarjaController(private val context: Context) {
         return db.insert(DB.TABLE_ENCABEZADO, null, values)
     }
 
-    // ... (El resto de los métodos permanecen igual)
     fun getAllEmbalajes(): List<Pair<Int, String>> {
         val embalajes = mutableListOf<Pair<Int, String>>()
-        val db = dbHelper.readableDatabase
+        val db = safeReadableDatabase() ?: return embalajes
         val cursor = db.query(DB.TABLE_EMBALAJE, arrayOf(DB.COL_EMB_ID, DB.COL_EMB_CODIGO), null, null, null, null, "${DB.COL_EMB_CODIGO} ASC")
 
         with(cursor) {
@@ -116,7 +144,7 @@ class TarjaController(private val context: Context) {
 
     fun getAllEtiquetas(): List<Etiqueta> {
         val etiquetas = mutableListOf<Etiqueta>()
-        val db = dbHelper.readableDatabase
+        val db = safeReadableDatabase() ?: return etiquetas
         val cursor = db.query(DB.TABLE_ETIQUETA, null, null, null, null, null, "${DB.COL_ETI_ID} ASC")
 
         with(cursor) {
@@ -135,7 +163,7 @@ class TarjaController(private val context: Context) {
 
     fun getAllVariedades(): List<String> {
         val variedades = mutableListOf<String>()
-        val db = dbHelper.readableDatabase
+        val db = safeReadableDatabase() ?: return variedades
         val cursor = db.query(DB.TABLE_VARIEDAD, arrayOf(DB.COL_VAR_NOMBRE), null, null, null, null, "${DB.COL_VAR_NOMBRE} ASC")
 
         with(cursor) {
@@ -149,8 +177,8 @@ class TarjaController(private val context: Context) {
     }
 
     fun getPluForVariedad(nombreVariedad: String): Int? {
-        val db = dbHelper.readableDatabase
-        var pluCode: Int? = null
+        val db = safeReadableDatabase() ?: return null
+         var pluCode: Int? = null
 
         val query = """
             SELECT p.${DB.COL_PLU_CODE}
@@ -169,7 +197,7 @@ class TarjaController(private val context: Context) {
     }
 
     fun updateStatusEnviado(numTarja: Int): Int {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return 0
         val values = ContentValues().apply {
             put(DB.COL_ENC_STATUS, "enviado")
         }
@@ -177,7 +205,7 @@ class TarjaController(private val context: Context) {
     }
 
     fun updateStatusPendiente(numTarja: Int): Int {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return 0
         val values = ContentValues().apply {
             put(DB.COL_ENC_STATUS, "pendiente")
         }
@@ -185,8 +213,8 @@ class TarjaController(private val context: Context) {
     }
 
     fun getFilteredEncabezados(status: String?, fechaDesde: String?, fechaHasta: String?): List<Encabezado> {
-        val encabezados = mutableListOf<Encabezado>()
-        val db = dbHelper.readableDatabase
+         val encabezados = mutableListOf<Encabezado>()
+        val db = safeReadableDatabase() ?: return encabezados
 
         var selection = ""
         val selectionArgs = mutableListOf<String>()
@@ -242,7 +270,7 @@ class TarjaController(private val context: Context) {
         categoria: String,
         cantidadCajas: Int
     ): Long {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return -1
         val values = ContentValues().apply {
             put(DB.COL_DET_NUM_TARJA, numTarja)
             put(DB.COL_DET_FOLIO, folio)
@@ -257,15 +285,15 @@ class TarjaController(private val context: Context) {
     }
 
     fun getDetallesPorTarja(numTarja: Int): List<Tarja> {
-        val detalles = mutableListOf<Tarja>()
-        val db = dbHelper.readableDatabase
-        val cursor = db.query(
-            DB.TABLE_DETALLE,
-            null,
-            "${DB.COL_DET_NUM_TARJA} = ?",
-            arrayOf(numTarja.toString()),
-            null, null, "${DB.COL_DET_ID} DESC"
-        )
+         val detalles = mutableListOf<Tarja>()
+        val db = safeReadableDatabase() ?: return detalles
+         val cursor = db.query(
+             DB.TABLE_DETALLE,
+             null,
+             "${DB.COL_DET_NUM_TARJA} = ?",
+             arrayOf(numTarja.toString()),
+             null, null, "${DB.COL_DET_ID} DESC"
+         )
 
         with(cursor) {
             while (moveToNext()) {
@@ -296,7 +324,7 @@ class TarjaController(private val context: Context) {
         categoria: String,
         cantidadCajas: Int
     ): Int {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return 0
         val values = ContentValues().apply {
             put(DB.COL_DET_FOLIO, folio)
             put(DB.COL_DET_CSG, csg)
@@ -310,25 +338,25 @@ class TarjaController(private val context: Context) {
     }
 
     fun deleteDetalle(idDetalle: Int): Int {
-        val db = dbHelper.writableDatabase
+        val db = safeWritableDatabase() ?: return 0
         return db.delete(DB.TABLE_DETALLE, "${DB.COL_DET_ID} = ?", arrayOf(idDetalle.toString()))
     }
 
     private fun getTotalCajas(numTarja: Int): Int {
-        val db = dbHelper.readableDatabase
-        var total = 0
-        val cursor = db.rawQuery("SELECT SUM(${DB.COL_DET_CANTIDAD}) as total FROM ${DB.TABLE_DETALLE} WHERE ${DB.COL_DET_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
-        if (cursor.moveToFirst()) {
-            total = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
-        }
-        cursor.close()
-        return total
-    }
+        val db = safeReadableDatabase() ?: return 0
+         var total = 0
+         val cursor = db.rawQuery("SELECT SUM(${DB.COL_DET_CANTIDAD}) as total FROM ${DB.TABLE_DETALLE} WHERE ${DB.COL_DET_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
+         if (cursor.moveToFirst()) {
+             total = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
+         }
+         cursor.close()
+         return total
+     }
 
-    fun getAllEncabezados(): List<Encabezado> {
-        val encabezados = mutableListOf<Encabezado>()
-        val db = dbHelper.readableDatabase
-        val cursor = db.query(DB.TABLE_ENCABEZADO, null, null, null, null, null, "${DB.COL_ENC_NUM_TARJA} DESC")
+     fun getAllEncabezados(): List<Encabezado> {
+         val encabezados = mutableListOf<Encabezado>()
+        val db = safeReadableDatabase() ?: return encabezados
+         val cursor = db.query(DB.TABLE_ENCABEZADO, null, null, null, null, null, "${DB.COL_ENC_NUM_TARJA} DESC")
 
         with(cursor) {
             while (moveToNext()) {
@@ -358,17 +386,17 @@ class TarjaController(private val context: Context) {
     }
 
     fun deleteTarjaCompleta(numTarja: Int): Boolean {
-        val db = dbHelper.writableDatabase
-        var result = false
-        db.beginTransaction()
-        try {
-            db.delete(DB.TABLE_DETALLE, "${DB.COL_DET_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
-            val deletedRows = db.delete(DB.TABLE_ENCABEZADO, "${DB.COL_ENC_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
-            db.setTransactionSuccessful()
-            result = deletedRows > 0
-        } finally {
-            db.endTransaction()
-        }
-        return result
-    }
-}
+        val db = safeWritableDatabase() ?: return false
+         var result = false
+         db.beginTransaction()
+         try {
+             db.delete(DB.TABLE_DETALLE, "${DB.COL_DET_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
+             val deletedRows = db.delete(DB.TABLE_ENCABEZADO, "${DB.COL_ENC_NUM_TARJA} = ?", arrayOf(numTarja.toString()))
+             db.setTransactionSuccessful()
+             result = deletedRows > 0
+         } finally {
+             db.endTransaction()
+         }
+         return result
+     }
+ }
