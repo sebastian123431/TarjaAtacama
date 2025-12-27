@@ -65,6 +65,11 @@ dependencies {
     implementation("org.apache.commons:commons-collections4:4.4")
     implementation("com.github.virtuald:curvesapi:1.07")
 
+    // Añadimos el driver bundled para AndroidX SQLite en debug para que el Database Inspector funcione correctamente en Android Studio.
+    // No afecta al build release.
+    // Usar versión más reciente disponible para evitar problemas de resolución
+    debugImplementation("androidx.sqlite:sqlite:2.6.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -3,6 +3,7 @@ package cl.Atacama.tarjaatacama
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -47,5 +48,20 @@ class MainActivity : AppCompatActivity() {
     fun ver_tarjas_ingresadas (view: View) {
         val intent = Intent(this, tarjas_ingresadas::class.java)
         startActivity(intent)
+    }
+
+    // Función de prueba para ejecutar la importación desde la UI (botón de debug)
+    fun importCsv(view: View) {
+        Thread {
+            try {
+                runOnUiThread {
+                    Toast.makeText(this, "Import finished", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
     }
 }

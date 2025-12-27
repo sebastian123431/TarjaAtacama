@@ -2,8 +2,12 @@ package cl.Atacama.tarjaatacama
 
 import android.app.Application
 import android.util.Log
-import cl.Atacama.tarjaatacama.util.CsvImportRunner
 import cl.Atacama.tarjaatacama.db.DB
+
+// Nota: la importación CSV ya no se ejecuta automáticamente en onCreate porque
+// puede abrir la base de datos y provocar migraciones o conflictos en instalaciones
+// existentes. Usa el BroadcastReceiver `CsvImportReceiver` o llama manualmente a
+// CsvImportRunner cuando quieras ejecutar la importación.
 
 class App : Application() {
     companion object {
@@ -23,14 +27,8 @@ class App : Application() {
             Log.w(TAG, "No se pudo inicializar la BD antes de la importación: ${e.message}")
             // continuamos de todas formas; el import se ejecutará y el DB helper intentará migrar también
         }
-        // Ejecutar importación en background para no bloquear el hilo UI
-        Thread {
-            try {
-                val result = CsvImportRunner.runImportFromDefaultFolder(this)
-                Log.i(TAG, "CSV import result: $result")
-            } catch (e: Exception) {
-                Log.e(TAG, "Error running CSV import: ${e.message}")
-            }
-        }.start()
+
+        // No ejecutar import automáticamente. Para ejecutar manualmente desde adb:
+        // adb shell am broadcast -a cl.Atacama.tarjaatacama.IMPORT_CSV
     }
 }

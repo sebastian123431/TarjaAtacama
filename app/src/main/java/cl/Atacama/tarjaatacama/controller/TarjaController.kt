@@ -58,6 +58,7 @@ class TarjaController(private val context: Context) {
                  logo = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_LOGO_NOM)),
                  procProd = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_PROD)),
                  procCom = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PROC_COM)),
+                 // PLU de encabezado
                  plu = cursor.getInt(cursor.getColumnIndexOrThrow(DB.COL_ENC_PLU)),
                  totalCajas = totalCajas,
                  status = cursor.getString(cursor.getColumnIndexOrThrow(DB.COL_ENC_STATUS))
@@ -84,8 +85,9 @@ class TarjaController(private val context: Context) {
         val values = ContentValues().apply {
             put(DB.COL_ENC_NUM_PALLET, numPallet)
             put(DB.COL_ENC_FECHA, fechaEmbalaje)
-            put(DB.COL_ENC_EMBALAJE_ID, embalaje)
-            put(DB.COL_ENC_ETIQUETA_ID, etiquetaId.toIntOrNull())
+            // Asegurarse de no insertar NULL en columnas NOT NULL: usar 0 como fallback
+            put(DB.COL_ENC_EMBALAJE_ID, embalaje.toIntOrNull() ?: 0)
+            put(DB.COL_ENC_ETIQUETA_ID, etiquetaId.toIntOrNull() ?: 0)
             put(DB.COL_ENC_VARIEDAD, variedad)
             put(DB.COL_ENC_RECIBIDOR, recibidor)
             put(DB.COL_ENC_LOGO_NOM, logo)
@@ -114,8 +116,9 @@ class TarjaController(private val context: Context) {
             put(DB.COL_ENC_NUM_TARJA, numTarja)
             put(DB.COL_ENC_NUM_PALLET, numPallet)
             put(DB.COL_ENC_FECHA, fechaEmbalaje)
-            put(DB.COL_ENC_EMBALAJE_ID, embalaje)
-            put(DB.COL_ENC_ETIQUETA_ID, etiquetaId.toIntOrNull())
+            // Asegurar no insertar NULL en columnas NOT NULL: usar 0 como fallback
+            put(DB.COL_ENC_EMBALAJE_ID, embalaje.toIntOrNull() ?: 0)
+            put(DB.COL_ENC_ETIQUETA_ID, etiquetaId.toIntOrNull() ?: 0)
             put(DB.COL_ENC_VARIEDAD, variedad)
             put(DB.COL_ENC_RECIBIDOR, recibidor)
             put(DB.COL_ENC_LOGO_NOM, logo)
@@ -399,4 +402,37 @@ class TarjaController(private val context: Context) {
          }
          return result
      }
+
+    // Nuevo método para leer PROCEDENCIA_PROD
+    fun getAllProcedenciaProd(): List<Pair<Int, String>> {
+        val list = mutableListOf<Pair<Int, String>>()
+        val db = safeReadableDatabase() ?: return list
+        val cursor = db.query(DB.TABLE_PROCEDENCIA_PROD, arrayOf(DB.COL_PROC_PROD_ID, DB.COL_PROC_PROD_CODIGO), null, null, null, null, "${DB.COL_PROC_PROD_CODIGO} ASC")
+        with(cursor) {
+            while (moveToNext()) {
+                val id = getInt(getColumnIndexOrThrow(DB.COL_PROC_PROD_ID))
+                val codigo = getString(getColumnIndexOrThrow(DB.COL_PROC_PROD_CODIGO))
+                list.add(Pair(id, codigo))
+            }
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getAllLogos(): List<Pair<Int, String>> {
+        val logos = mutableListOf<Pair<Int, String>>()
+        val db = safeReadableDatabase() ?: return logos
+        val cursor = db.query(DB.TABLE_LOGO, arrayOf(DB.COL_LOGO_ID, DB.COL_LOGO_NOM_COD), null, null, null, null, "${DB.COL_LOGO_NOM_COD} ASC")
+
+        with(cursor) {
+            while (moveToNext()) {
+                val id = getInt(getColumnIndexOrThrow(DB.COL_LOGO_ID))
+                val nomCod = getString(getColumnIndexOrThrow(DB.COL_LOGO_NOM_COD))
+                logos.add(Pair(id, nomCod))
+            }
+        }
+        cursor.close()
+        return logos
+    }
+
  }
